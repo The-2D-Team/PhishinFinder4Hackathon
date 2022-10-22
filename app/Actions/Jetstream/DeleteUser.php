@@ -16,6 +16,8 @@ class DeleteUser implements DeletesUsers
     {
         $user->deleteProfilePhoto();
         $user->tokens->each->delete();
+        $user->tasks->each(fn($task) => $task->checks->each->delete());
+        $user->tasks->each->delete();
         $user->delete();
     }
 }
