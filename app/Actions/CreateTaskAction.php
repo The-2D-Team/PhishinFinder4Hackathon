@@ -29,6 +29,7 @@ class CreateTaskAction
         $user->tasks()->save($task);
 
         $jobs = collect([
+            IdnDomainCheck::class,
             LongDomainCheck::class,
         ])->map(function (string $checkClass) use ($task) {
             $check = new Check;
