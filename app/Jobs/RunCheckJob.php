@@ -3,9 +3,11 @@
 namespace App\Jobs;
 
 use App\Checks\CheckInterface;
+use App\Checks\TooManyAttemptsException;
 use App\Models\Check;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Cache\LockTimeoutException;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -42,6 +44,10 @@ class RunCheckJob implements ShouldQueue
             $this->check->max_score = $instance->getMaxScore();
             $this->check->score = $instance->getScore();
             $this->check->status = 'success';
+        } catch (LockTimeoutException $e) {
+            $this->release(15);
+        } catch (TooManyAttemptsException $e) {
+            $this->release(30);
         } catch (\Exception $e) {
             $this->check->status = 'failed';
         }

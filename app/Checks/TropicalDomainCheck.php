@@ -13,11 +13,11 @@ class TropicalDomainCheck extends AbstractCheck
         $domain = parse_url($this->check->task->url, PHP_URL_HOST);
         $tld = Str::afterLast($domain, '.');
 
-        return in_array($tld, self::GLOBAL) ? 0 : 10;
+        return in_array($tld, self::GLOBAL) ? 0 : 2;
     }
 
     public function getMaxScore(): int
     {
-        return 10;
+        return 2;
     }
 }

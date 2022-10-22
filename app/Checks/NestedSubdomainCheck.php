@@ -15,11 +15,11 @@ class NestedSubdomainCheck extends AbstractCheck
             $dots--;
         }
 
-        return $dots >= 3 ? 10 : 0;
+        return $dots >= 3 ? 1 : 0;
     }
 
     public function getMaxScore(): int
     {
-        return 10;
+        return 1;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Checks\BadSeoLinkCheck;
 use App\Checks\IdnDomainCheck;
 use App\Checks\LoginFormCheck;
 use App\Checks\LongDomainCheck;
@@ -30,6 +31,8 @@ class CreateTaskAction
 
         $jobs = collect([
             IdnDomainCheck::class,
+            LoginFormCheck::class,
+            BadSeoLinkCheck::class,
             LongDomainCheck::class,
             NestedSubdomainCheck::class,
             TropicalDomainCheck::class,
