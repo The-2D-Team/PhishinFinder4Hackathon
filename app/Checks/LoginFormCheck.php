@@ -12,6 +12,10 @@ class LoginFormCheck extends AbstractCheck
     {
         ['headers' => $headers, 'status' => $status, 'body' => $body] = $this->download($this->check->task->url);
 
+        if($status == null) {
+            return 1;
+        }
+
         return Str::contains($body, '<form') ? 1 : 0;
     }
 

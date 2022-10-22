@@ -13,4 +13,6 @@ class Check extends Model
     {
         return $this->belongsTo(Task::class);
     }
+
+    protected $touches = ['task'];
 }
