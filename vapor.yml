@@ -3,6 +3,7 @@ name: PhishinFinder4Hackathon
 environments:
     production:
         database: DB
+        cache: Redis
         memory: 1024
         cli-memory: 512
         runtime: 'php-8.1:al2'
