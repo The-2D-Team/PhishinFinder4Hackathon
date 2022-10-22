@@ -31,6 +31,7 @@ class CreateTaskAction
         $jobs = collect([
             IdnDomainCheck::class,
             LongDomainCheck::class,
+            NestedSubdomainCheck::class,
             TropicalDomainCheck::class,
         ])->map(function (string $checkClass) use ($task) {
             $check = new Check;
