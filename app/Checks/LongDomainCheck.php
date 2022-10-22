@@ -8,7 +8,7 @@ class LongDomainCheck extends AbstractCheck
     {
         $domain = parse_url($this->check->task->url, PHP_URL_HOST);
         $length = strlen($domain);
-        return $length > 12 ? 10 : ($length > 6 ? 5 : 0);
+        return $length > 20 ? 10 : ($length > 12 ? 5 : 0);
     }
 
     public function getMaxScore(): int
