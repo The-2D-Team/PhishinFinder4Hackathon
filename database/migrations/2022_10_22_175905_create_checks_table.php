@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('type');
             $table->string('status')->default('pending');
             $table->integer('score')->nullable();
+            $table->integer('max_score')->nullable();
 
             $table->timestamps();
         });

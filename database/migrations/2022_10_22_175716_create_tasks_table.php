@@ -18,6 +18,7 @@ return new class extends Migration
             $table->id();
 
             $table->foreignIdFor(User::class);
+            $table->uuid('batch_id')->nullable();
 
             $table->string('url');
             $table->string('status')->default('pending');

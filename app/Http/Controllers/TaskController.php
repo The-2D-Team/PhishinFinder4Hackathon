@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\CreateOrRetrieveExistingTaskAction;
+use App\Actions\CreateTaskAction;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Http\Resources\Task as TaskResource;
@@ -27,18 +29,9 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(StoreTaskRequest $request)
+    public function store(StoreTaskRequest $request, CreateOrRetrieveExistingTaskAction $action)
     {
-        $task = $request->user()->tasks()
-            ->where('url', $request->get('url'))
-            ->first();
-
-        if($task == null) {
-            $task = new Task();
-            $task->url = $request->get('url');
-            $task->status = 'pending';
-            $request->user()->tasks()->save($task);
-        }
+        $task = $action->execute($request->user(), $request->get('url'));
 
         return TaskResource::make($task);
     }
