@@ -5,10 +5,12 @@ environments:
         database: DB
         cache: Redis
         memory: 1024
+        queue-memory: 1024
         cli-memory: 512
         runtime: 'php-8.1:al2'
         build:
             - 'COMPOSER_MIRROR_PATH_REPOS=1 composer install --no-dev'
             - 'php artisan event:cache'
-            - 'php artisan migrate --force'
           # - 'npm ci && npm run build && rm -rf node_modules'
+        deploy:
+            - 'php artisan migrate --force'
