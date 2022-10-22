@@ -5,10 +5,10 @@ namespace App\Actions;
 use App\Checks\BadSeoLinkCheck;
 use App\Checks\FakeDomainCheck;
 use App\Checks\IdnDomainCheck;
+use App\Checks\KeywordDomainCheck;
 use App\Checks\LoginFormCheck;
 use App\Checks\LongDomainCheck;
 use App\Checks\NestedSubdomainCheck;
-use App\Checks\SslCertificateCheck;
 use App\Checks\TropicalDomainCheck;
 use App\Jobs\FinishTaskJob;
 use App\Jobs\RunCheckJob;
@@ -36,6 +36,7 @@ class CreateTaskAction
             NestedSubdomainCheck::class,
             FakeDomainCheck::class,
             TropicalDomainCheck::class,
+            KeywordDomainCheck::class,
         ])->map(function (string $checkClass) use ($task) {
             $check = new Check;
             $check->type = $checkClass;

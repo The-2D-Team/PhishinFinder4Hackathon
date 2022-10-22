@@ -18,6 +18,6 @@ class TropicalDomainCheck extends AbstractCheck
 
     public function getMaxScore(): int
     {
-        return 2;
+        return 1;
     }
 }

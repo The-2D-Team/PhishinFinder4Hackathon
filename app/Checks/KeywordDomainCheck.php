@@ -4,22 +4,18 @@ namespace App\Checks;
 
 use Illuminate\Support\Str;
 
-class NestedSubdomainCheck extends AbstractCheck
+class KeywordDomainCheck extends AbstractCheck
 {
     public function getScore(): int
     {
         $domain = parse_url($this->check->task->url, PHP_URL_HOST);
-        $dots = Str::substrCount($domain, '.');
-
-        if(Str::startsWith($domain, 'www.')) {
-            $dots--;
-        }
-
-        return $dots >= 2 ? 1 : 0;
+        return Str::contains($domain, ['bank', 'loteria', 'lotto']) ? 2 : 0;
     }
 
     public function getMaxScore(): int
     {
         return 1;
     }
+
 }
+
