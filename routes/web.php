@@ -23,4 +23,13 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+    Route::post('/dashboard', function (\Illuminate\Http\Request $request, \App\Actions\CreateTaskAction $action) {
+        collect(explode("\n", $request->get('urls')))
+            ->map(fn($url) => trim($url))
+            ->filter()
+            ->filter(fn($url) => \Illuminate\Support\Facades\Validator::make(['url' => $url], ['url' => 'required|url'])->passes())
+            ->each(fn($url) => $action->execute($request->user(), $url));
+
+        return redirect()->back();
+    })->name('dashboard');
 });
