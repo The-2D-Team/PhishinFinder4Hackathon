@@ -36,14 +36,18 @@
                             </div>
                             <div class="mt-2 sm:flex sm:justify-between">
                                 <p class="mt-2 flex items-center text-sm text-gray-500">
-                                    @foreach($task->checks as $check)
-                                        <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-gray-800 {{ $check->status == 'success' ? 'bg-green-100' : '' }} {{ $check->status == 'failed' ? 'bg-red-100' : '' }}  {{ $check->status == 'partial' ? 'bg-blue-100' : '' }}   {{ $check->status == 'pending' ? 'bg-blue-100' : '' }}">
-                                            {{ \Illuminate\Support\Str::afterLast($check->type, '\\') }}
-                                            @if($check->score !== null)
-                                                {{$check->score}}/{{$check->max_score}}
-                                            @endif
-                                        </span>
-                                    @endforeach
+                                @foreach($task->checks->chunk(6) as $chunk)
+                                    <div>
+                                        @foreach($chunk as $check)
+                                            <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-gray-800 {{ $check->status == 'success' ? 'bg-green-100' : '' }} {{ $check->status == 'failed' ? 'bg-red-100' : '' }}  {{ $check->status == 'partial' ? 'bg-blue-100' : '' }}   {{ $check->status == 'pending' ? 'bg-blue-100' : '' }}">
+                                                {{ \Illuminate\Support\Str::afterLast($check->type, '\\') }}
+                                                @if($check->score !== null)
+                                                    {{$check->score}}/{{$check->max_score}}
+                                                @endif
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                @endforeach
                                 </p>
                             </div>
                         </div>

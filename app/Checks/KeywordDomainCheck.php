@@ -14,7 +14,7 @@ class KeywordDomainCheck extends AbstractCheck
 
     public function getMaxScore(): int
     {
-        return 1;
+        return 0;
     }
 
 }

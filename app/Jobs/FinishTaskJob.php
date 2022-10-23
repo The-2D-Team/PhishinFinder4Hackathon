@@ -53,7 +53,7 @@ class FinishTaskJob implements ShouldQueue
         $total = $successful->sum('score');
         $of = $successful->sum('max_score');
 
-        $this->task->score = $total / $of * 100;
+        $this->task->score = min($total / $of * 100, 100);
 
         $this->task->save();
     }

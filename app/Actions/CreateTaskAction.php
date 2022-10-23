@@ -3,9 +3,11 @@
 namespace App\Actions;
 
 use App\Checks\BadSeoLinkCheck;
+use App\Checks\DeadWebsiteCheck;
 use App\Checks\FakeDomainCheck;
 use App\Checks\IdnDomainCheck;
 use App\Checks\KeywordDomainCheck;
+use App\Checks\LinksCheck;
 use App\Checks\LoginFormCheck;
 use App\Checks\LongDomainCheck;
 use App\Checks\NestedSubdomainCheck;
@@ -37,6 +39,8 @@ class CreateTaskAction
             FakeDomainCheck::class,
             TropicalDomainCheck::class,
             KeywordDomainCheck::class,
+            LinksCheck::class,
+            DeadWebsiteCheck::class,
         ])->map(function (string $checkClass) use ($task) {
             $check = new Check;
             $check->type = $checkClass;
