@@ -12,6 +12,7 @@ use App\Checks\LoginFormCheck;
 use App\Checks\LongDomainCheck;
 use App\Checks\NestedSubdomainCheck;
 use App\Checks\TropicalDomainCheck;
+use App\Jobs\CreateTaskJob;
 use App\Jobs\FinishTaskJob;
 use App\Jobs\RunCheckJob;
 use App\Models\Check;
@@ -30,37 +31,9 @@ class CreateTaskAction
         $task->status = 'pending';
         $user->tasks()->save($task);
 
-        $jobs = collect([
-            IdnDomainCheck::class,
-            LoginFormCheck::class,
-            BadSeoLinkCheck::class,
-            LongDomainCheck::class,
-            NestedSubdomainCheck::class,
-            FakeDomainCheck::class,
-            TropicalDomainCheck::class,
-            KeywordDomainCheck::class,
-            LinksCheck::class,
-            DeadWebsiteCheck::class,
-        ])->map(function (string $checkClass) use ($task) {
-            $check = new Check;
-            $check->type = $checkClass;
-            $task->checks()->save($check);
-
-            return $check;
-        })->map(function (Check $check) {
-            return new RunCheckJob($check);
-        });
-
-        $batch = Bus::batch($jobs->toArray())->then(function (Batch $batch) {
-            // All jobs completed successfully...
-        })->catch(function (Batch $batch, Throwable $e) {
-            // First batch job failure detected...
-        })->finally(function (Batch $batch) use ($task) {
-            FinishTaskJob::dispatch($task);
-        })->name('Task '.$task->id)->dispatch();
-
-        $task->batch_id = $batch->id;
         $task->save();
+
+        CreateTaskJob::dispatch($task);
 
         return $task;
     }
