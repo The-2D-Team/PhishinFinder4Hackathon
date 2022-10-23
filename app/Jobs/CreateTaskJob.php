@@ -65,13 +65,18 @@ class CreateTaskJob implements ShouldQueue
             return new RunCheckJob($check);
         });
 
+        $task = $this->task;
+
         $batch = Bus::batch($jobs->toArray())->then(function (Batch $batch) {
             // All jobs completed successfully...
         })->catch(function (Batch $batch, Throwable $e) {
             // First batch job failure detected...
-        })->finally(function (Batch $batch) {
-            FinishTaskJob::dispatch($this->task);
-        })->name('Task '.$this->task->id)->dispatch();
+        })
+            ->finally(function (Batch $batch) use ($task) {
+                FinishTaskJob::dispatch($task);
+        })
+            ->name('Task '.$this->task->id)
+            ->dispatch();
 
         $this->task->batch_id = $batch->id;
         $this->task->save();
