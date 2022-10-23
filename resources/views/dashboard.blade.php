@@ -17,7 +17,7 @@
                                 <!-- Url -->
                                 <div class="col-span-12">
                                     <x-jet-label for="urls" value="{{ __('Urls') }}" />
-                                    <textarea id="urls" name="urls" type="text" class="mt-1 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">@include('test_urls')</textarea>
+                                    <textarea id="urls" name="urls" type="text" class="mt-1 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"></textarea>
                                     <x-jet-input-error for="urls" class="mt-2" />
                                 </div>
 
