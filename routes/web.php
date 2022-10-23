@@ -23,6 +23,12 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+    Route::get('/download', function (\App\Actions\GetTextExportAction $action) {
+        return response($action->execute(auth()->user()), 200, [
+            'Content-Type' => 'text/plain',
+            'Content-Disposition' => 'attachment; filename="export.txt"'
+        ]);
+    })->name('download');
     Route::post('/dashboard', function (\Illuminate\Http\Request $request, \App\Actions\CreateTaskAction $action) {
         collect(explode("\n", $request->get('urls')))
             ->map(fn($url) => trim($url))
